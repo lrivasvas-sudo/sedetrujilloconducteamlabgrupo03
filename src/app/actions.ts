@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { moods } from "@/config/moods";
+import { modoDemo } from "@/services/demo-mode";
 import { getAccessToken, getCurrentUser, signIn, signOut } from "@/services/session";
 
 const LOGIN_MESSAGES = {
@@ -49,6 +50,11 @@ export async function saveMoodAction(moodId: string): Promise<SaveMoodResult> {
   const token = await getAccessToken();
   if (!user || !token) {
     return { ok: false, error: "Tu sesión terminó. Vuelve a ingresar." };
+  }
+
+  // Demo: el registro no se guarda en la base; solo se devuelve la hora actual.
+  if (modoDemo()) {
+    return { ok: true, registradoEn: new Date().toISOString() };
   }
 
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;

@@ -1,6 +1,8 @@
 // Comprobación de un token de acceso: ¿es una cuenta válida y registrada en Nara?
 // No usa cookies, así que sirve tanto para el proxy como para las pantallas.
 
+import { DEMO_TOKEN, DEMO_USER, modoDemo } from "@/services/demo-mode";
+
 export const SESSION_COOKIE = "nara_sesion";
 
 export type SessionUser = { id: string; email: string };
@@ -31,6 +33,10 @@ export async function isRegistered(accessToken: string, userId: string): Promise
 
 // Devuelve la persona del token si la sesión es válida y la cuenta está registrada; si no, null.
 export async function userFromToken(token: string): Promise<SessionUser | null> {
+  if (modoDemo()) {
+    return token === DEMO_TOKEN ? DEMO_USER : null;
+  }
+
   const { url, key } = supabaseConfig();
   const response = await fetch(`${url}/auth/v1/user`, {
     headers: { apikey: key, Authorization: `Bearer ${token}` },

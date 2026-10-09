@@ -3,6 +3,7 @@
 // que JavaScript no puede leer. Las reglas de la base de datos (RLS) son la protección real.
 
 import { cookies } from "next/headers";
+import { DEMO_TOKEN, modoDemo } from "@/services/demo-mode";
 import {
   SESSION_COOKIE,
   isRegistered,
@@ -26,6 +27,19 @@ function supabaseConfig() {
 }
 
 export async function signIn(email: string, password: string): Promise<SignInResult> {
+  if (modoDemo()) {
+    // Demo: cualquier usuario y contraseña entran, sin consultar Supabase.
+    const cookieStore = await cookies();
+    cookieStore.set(SESSION_COOKIE, DEMO_TOKEN, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 8,
+    });
+    return { ok: true };
+  }
+
   const { url, key } = supabaseConfig();
 
   let response: Response;
