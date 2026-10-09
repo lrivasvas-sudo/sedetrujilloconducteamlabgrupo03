@@ -13,7 +13,7 @@ Solo se marca como implementado lo que existe y se puede comprobar en el código
 | R-04 | Diseño adaptable a celulares, tabletas y computadoras. | Clases responsivas de Tailwind en `src/components/WelcomeHero.tsx` |
 | R-05 | Logotipo de texto «Nara» con tipografía redondeada (Nunito). | `src/components/Logo.tsx` |
 | R-06 | Comandos de desarrollo, comprobación y producción. | `package.json` |
-| R-07 | Formulario de acceso **en modo de prueba**: pide correo y contraseña, pero cualquier valor permite entrar. No verifica, no guarda y no envía datos. Lleva a una página provisional `/inicio`. **No es autenticación real.** | `src/components/LoginForm.tsx`, `src/app/inicio/page.tsx` |
+| R-07 | Formulario de acceso **en modo de prueba**: pide solo la contraseña, y cualquier valor permite entrar. No verifica, no guarda y no envía datos. Lleva a una página provisional `/inicio`. **No es autenticación real.** | `src/components/LoginForm.tsx`, `src/app/inicio/page.tsx` |
 
 ## Pendientes
 
