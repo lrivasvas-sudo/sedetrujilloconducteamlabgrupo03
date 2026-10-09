@@ -31,12 +31,13 @@ export default function InicioPage() {
             className="h-auto w-full max-w-[200px]"
           />
           <h2 className="text-2xl font-bold text-nara-texto">Atención psicológica</h2>
-          <p className="text-lg text-nara-texto/80">
-            Si necesitas apoyo, puedes solicitar una cita{" "}
-            <PendingAction className="inline font-bold text-nara-menta-fuerte underline underline-offset-4 hover:opacity-80">
-              AQUÍ
-            </PendingAction>
-          </p>
+          <p className="text-lg text-nara-texto/80">Si necesitas apoyo, puedes solicitar una cita.</p>
+          <Link
+            href="/inicio/cita"
+            className="rounded-full bg-nara-menta-fuerte px-6 py-3 font-bold text-white transition hover:opacity-90 focus:outline-none focus:ring-4 focus:ring-nara-menta"
+          >
+            Deseo reservar mi cita
+          </Link>
         </section>
 
         <section className="flex flex-col items-center gap-4 rounded-[2rem] bg-white/70 p-6 text-center shadow-sm ring-1 ring-nara-cielo sm:p-8">
