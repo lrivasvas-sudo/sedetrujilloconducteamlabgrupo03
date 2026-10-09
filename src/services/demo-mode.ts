@@ -6,6 +6,9 @@ export const DEMO_TOKEN = "demo";
 
 export const DEMO_USER = { id: "demo", email: "demo@nara.local" };
 
+// Contraseña fija del modo demo. Solo vale cuando MODO_DEMO=true.
+export const DEMO_PASSWORD = "123456";
+
 export function modoDemo(): boolean {
   return process.env.MODO_DEMO === "true";
 }
