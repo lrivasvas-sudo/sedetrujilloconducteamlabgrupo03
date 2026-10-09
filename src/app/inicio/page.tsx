@@ -3,7 +3,6 @@ import Link from "next/link";
 import { MoodPicker } from "@/components/MoodPicker";
 import { NaraChat } from "@/components/NaraChat";
 import { PanicButton } from "@/components/PanicButton";
-import { PendingAction } from "@/components/PendingAction";
 import { WelcomeHero } from "@/components/WelcomeHero";
 
 // Pantalla de inicio tras el acceso de prueba.
@@ -49,9 +48,12 @@ export default function InicioPage() {
             className="h-auto w-full max-w-[200px]"
           />
           <h2 className="text-2xl font-bold text-nara-texto">Mi bienestar emocional</h2>
-          <PendingAction className="rounded-full bg-nara-cielo-fuerte px-6 py-3 font-bold text-white transition hover:opacity-90 focus:outline-none focus:ring-4 focus:ring-nara-cielo">
+          <Link
+            href="/inicio/bienestar"
+            className="rounded-full bg-nara-cielo-fuerte px-6 py-3 font-bold text-white transition hover:opacity-90 focus:outline-none focus:ring-4 focus:ring-nara-cielo"
+          >
             Ver mi progreso
-          </PendingAction>
+          </Link>
         </section>
       </div>
 

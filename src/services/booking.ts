@@ -12,7 +12,12 @@ export type BookingRequest = {
 export type BookingResult = { ok: true } | { ok: false; reason: "taken" };
 
 // Horarios reservados durante esta visita (se pierden al recargar la página).
-const demoBookings = new Set<string>();
+const demoBookings = new Map<string, BookingRequest>();
+
+// Citas reservadas en esta visita (demostración).
+export function listDemoBookings(): BookingRequest[] {
+  return [...demoBookings.values()];
+}
 
 function slotKey({ professionalId, date, hour }: BookingRequest): string {
   return `${professionalId}|${date}|${hour}`;
@@ -29,6 +34,10 @@ export function isSlotTaken(request: BookingRequest): boolean {
   return isDemoOccupied(request) || demoBookings.has(slotKey(request));
 }
 
+export function bookingKey(request: BookingRequest): string {
+  return slotKey(request);
+}
+
 // Simula la respuesta del servidor. Lanza un error si algo falla de verdad.
 export async function requestBooking(request: BookingRequest): Promise<BookingResult> {
   await new Promise((resolve) => setTimeout(resolve, 700));
@@ -37,6 +46,6 @@ export async function requestBooking(request: BookingRequest): Promise<BookingRe
     return { ok: false, reason: "taken" };
   }
 
-  demoBookings.add(slotKey(request));
+  demoBookings.set(slotKey(request), request);
   return { ok: true };
 }
