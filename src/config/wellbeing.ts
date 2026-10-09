@@ -8,7 +8,8 @@ import { moods, type Mood } from "@/config/moods";
 export const WELLBEING_DEMO_NOTICE =
   "Datos ficticios de demostración. No hay base de datos conectada: lo que registres o valores solo se muestra mientras esta página esté abierta.";
 
-export type MoodEntry = { date: string; moodId: string };
+// Registro de una emoción, con fecha (AAAA-MM-DD) y hora (HH:mm).
+export type MoodRecord = { date: string; time: string; moodId: string };
 
 export type CareSession = {
   id: string;
@@ -30,13 +31,14 @@ export function findMood(moodId: string): Mood | undefined {
 }
 
 // Registros de los últimos 30 días (sin incluir hoy), con un patrón fijo de ejemplo.
-export function buildDemoMoodEntries(today: string): MoodEntry[] {
-  const entries: MoodEntry[] = [];
+// Van del más reciente al más antiguo, igual que los registros nuevos.
+export function buildDemoMoodRecords(today: string): MoodRecord[] {
+  const records: MoodRecord[] = [];
   for (let offset = 1; offset <= 30; offset++) {
     const index = (offset * 3 + (offset % 5)) % moods.length;
-    entries.push({ date: addDays(today, -offset), moodId: moods[index].id });
+    records.push({ date: addDays(today, -offset), time: "20:00", moodId: moods[index].id });
   }
-  return entries;
+  return records;
 }
 
 export function buildDemoSessions(today: string): CareSession[] {

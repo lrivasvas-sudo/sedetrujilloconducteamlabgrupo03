@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { findMood, type CareReview, type MoodEntry } from "@/config/wellbeing";
+import { findMood, type CareReview, type MoodRecord } from "@/config/wellbeing";
 import { moods } from "@/config/moods";
 import { addDays, weekdayShort } from "@/lib/dates";
 
@@ -56,7 +56,7 @@ export function WellbeingProgress({
   reviews,
 }: {
   today: string;
-  entries: MoodEntry[];
+  entries: MoodRecord[];
   reviews: CareReview[];
 }) {
   const [period, setPeriod] = useState<Period>("semana");
@@ -70,7 +70,7 @@ export function WellbeingProgress({
   const shownEntries = period === "semana" ? inRange(weekFrom, today) : lastMonth;
 
   // Frecuencia de emociones por periodo (semana o mes).
-  const countsFor = (list: MoodEntry[]) =>
+  const countsFor = (list: MoodRecord[]) =>
     moods
       .map((mood) => ({
         mood,
@@ -93,11 +93,12 @@ export function WellbeingProgress({
   // Evolución: 7 días (semana) o 4 semanas (mes).
   const weekItems: BarItem[] = Array.from({ length: 7 }, (_, index) => {
     const date = addDays(today, index - 6);
-    const entry = entries.find((item) => item.date === date);
+    // Si hay varios registros el mismo día, se usa el promedio de ese día.
+    const dayEntries = entries.filter((item) => item.date === date);
     return {
       label: weekdayShort(date),
       sub: date.slice(8),
-      value: entry ? findMood(entry.moodId)?.score ?? null : null,
+      value: average(dayEntries.map((item) => findMood(item.moodId)?.score ?? 0)),
     };
   });
 

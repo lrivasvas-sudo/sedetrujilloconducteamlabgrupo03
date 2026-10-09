@@ -1,13 +1,21 @@
 "use client";
 
 import { useState } from "react";
-import { moods } from "@/config/moods";
+import { moods, type Mood } from "@/config/moods";
+import { addMoodRecord } from "@/services/mood-log";
 
 // Escala de 8 caritas para elegir cómo te sientes hoy.
-// La elección solo se muestra en pantalla; no se guarda.
+// «Registrar» guarda la emoción con fecha y hora y muestra un mensaje motivacional.
 export function MoodPicker() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [registered, setRegistered] = useState<{ mood: Mood; time: string } | null>(null);
   const selected = moods.find((mood) => mood.id === selectedId);
+
+  function handleRegister() {
+    if (!selected) return;
+    const record = addMoodRecord(selected.id);
+    setRegistered({ mood: selected, time: record.time });
+  }
 
   return (
     <section className="flex w-full flex-col gap-6 rounded-[2rem] bg-white/70 p-6 shadow-sm ring-1 ring-nara-lavanda sm:p-10">
@@ -28,7 +36,10 @@ export function MoodPicker() {
               key={mood.id}
               type="button"
               aria-pressed={isSelected}
-              onClick={() => setSelectedId(mood.id)}
+              onClick={() => {
+                setSelectedId(mood.id);
+                setRegistered(null);
+              }}
               className={`flex flex-col items-center gap-2 rounded-3xl px-3 py-5 text-base font-semibold transition focus:outline-none focus:ring-4 focus:ring-nara-lavanda ${
                 isSelected
                   ? "bg-nara-menta ring-2 ring-nara-menta-fuerte"
@@ -42,6 +53,26 @@ export function MoodPicker() {
             </button>
           );
         })}
+      </div>
+
+      <div className="flex flex-col items-center gap-4">
+        <button
+          type="button"
+          onClick={handleRegister}
+          disabled={!selected}
+          className="rounded-full bg-nara-lavanda-fuerte px-8 py-3 font-bold text-white transition hover:opacity-90 focus:outline-none focus:ring-4 focus:ring-nara-lavanda disabled:opacity-50"
+        >
+          Registrar
+        </button>
+
+        {registered && (
+          <div role="status" className="flex max-w-md flex-col gap-2 rounded-2xl bg-nara-menta/60 px-5 py-4 text-center text-nara-texto">
+            <span className="text-sm font-semibold">
+              Registrado hoy a las {registered.time}: {registered.mood.emoji} {registered.mood.label}
+            </span>
+            <p className="text-base leading-relaxed">{registered.mood.motivation}</p>
+          </div>
+        )}
       </div>
     </section>
   );

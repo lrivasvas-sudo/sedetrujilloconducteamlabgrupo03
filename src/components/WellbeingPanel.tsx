@@ -6,15 +6,15 @@ import { WellbeingRegister } from "@/components/WellbeingRegister";
 import { WellbeingSessions } from "@/components/WellbeingSessions";
 import {
   WELLBEING_DEMO_NOTICE,
-  buildDemoMoodEntries,
   buildDemoReviews,
   buildDemoSessions,
   type CareReview,
   type CareSession,
-  type MoodEntry,
+  type MoodRecord,
 } from "@/config/wellbeing";
 import { toIsoDate } from "@/lib/dates";
 import { bookingKey, listDemoBookings } from "@/services/booking";
+import { getMoodRecords, subscribeMoodRecords } from "@/services/mood-log";
 
 type Tab = "registro" | "progreso" | "atenciones";
 
@@ -30,6 +30,8 @@ const subscribeNothing = () => () => {};
 const readToday = () => toIsoDate(new Date());
 const noToday = () => null;
 
+const NO_RECORDS: MoodRecord[] = [];
+
 // Panel personal de bienestar emocional. Todo el estado vive solo en esta visita.
 export function WellbeingPanel() {
   const today = useSyncExternalStore(subscribeNothing, readToday, noToday);
@@ -44,9 +46,11 @@ export function WellbeingPanel() {
 function WellbeingContent({ today }: { today: string }) {
   const [tab, setTab] = useState<Tab>("registro");
 
-  // Datos iniciales: registros ficticios, citas de demostración y las citas
-  // reservadas en esta visita.
-  const [entries, setEntries] = useState<MoodEntry[]>(() => buildDemoMoodEntries(today));
+  // Los registros de emociones vienen del almacén compartido: se actualizan solos
+  // cuando se registra una emoción desde inicio o desde este panel.
+  const records = useSyncExternalStore(subscribeMoodRecords, getMoodRecords, () => NO_RECORDS);
+
+  // Citas de demostración y las reservadas en esta visita.
   const [sessions] = useState<CareSession[]>(() => [
     ...buildDemoSessions(today),
     ...listDemoBookings().map((booking) => ({
@@ -58,18 +62,9 @@ function WellbeingContent({ today }: { today: string }) {
   ]);
   const [reviews, setReviews] = useState<Record<string, CareReview>>(buildDemoReviews);
 
-  function saveToday(moodId: string) {
-    setEntries((previous) => [
-      { date: today, moodId },
-      ...previous.filter((entry) => entry.date !== today),
-    ]);
-  }
-
   function saveReview(sessionId: string, review: CareReview) {
     setReviews((previous) => ({ ...previous, [sessionId]: review }));
   }
-
-  const sortedEntries = [...entries].sort((a, b) => b.date.localeCompare(a.date));
 
   return (
     <div className="flex w-full flex-col gap-6">
@@ -96,11 +91,9 @@ function WellbeingContent({ today }: { today: string }) {
         ))}
       </nav>
 
-      {tab === "registro" && (
-        <WellbeingRegister today={today} entries={sortedEntries} onSave={saveToday} />
-      )}
+      {tab === "registro" && <WellbeingRegister records={records} />}
       {tab === "progreso" && (
-        <WellbeingProgress today={today} entries={entries} reviews={Object.values(reviews)} />
+        <WellbeingProgress today={today} entries={records} reviews={Object.values(reviews)} />
       )}
       {tab === "atenciones" && (
         <WellbeingSessions today={today} sessions={sessions} reviews={reviews} onReview={saveReview} />

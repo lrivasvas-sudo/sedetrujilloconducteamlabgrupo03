@@ -18,6 +18,13 @@ function parseIsoDate(iso: string): Date {
   return new Date(year, month - 1, day);
 }
 
+// Hora en formato 24 horas, por ejemplo «14:05».
+export function toTimeText(date: Date): string {
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  return `${hours}:${minutes}`;
+}
+
 export function addDays(iso: string, days: number): string {
   const date = parseIsoDate(iso);
   date.setDate(date.getDate() + days);
