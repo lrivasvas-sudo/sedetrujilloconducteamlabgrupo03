@@ -6,10 +6,9 @@ export type EmergencyContact = {
   name: string;
   number: string;
   description: string;
-  // Si tiene tipo, el panel también lo muestra como icono de acceso rápido.
-  kind?: "medical" | "psychological";
 };
 
+// Contactos que se muestran con su número en el panel.
 export const emergencyContacts: EmergencyContact[] = [
   {
     name: "Policía Nacional",
@@ -17,20 +16,12 @@ export const emergencyContacts: EmergencyContact[] = [
     description: "Si hay peligro inmediato para ti o para otra persona.",
   },
   {
-    name: "SAMU",
-    number: "106",
-    description: "Si necesitas atención médica de urgencia.",
-    kind: "medical",
-  },
-  {
-    name: "Psicólogo",
-    number: "997213587",
-    description: "Para hablar con un psicólogo ahora mismo.",
-    kind: "psychological",
-  },
-  {
     name: "Línea 113 del Minsa, opción 5",
     number: "113",
     description: "Orientación en salud mental, gratuita y disponible las 24 horas.",
   },
 ];
+
+// Línea que atiende tanto atención médica como psicológica.
+// Sus botones llaman directamente y no muestran el número en el panel.
+export const careLineNumber = "997213587";

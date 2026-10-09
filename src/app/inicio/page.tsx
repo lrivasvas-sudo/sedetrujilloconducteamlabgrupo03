@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { MoodPicker } from "@/components/MoodPicker";
+import { NaraChat } from "@/components/NaraChat";
 import { PanicButton } from "@/components/PanicButton";
 import { PendingAction } from "@/components/PendingAction";
 import { WelcomeHero } from "@/components/WelcomeHero";
@@ -11,9 +12,7 @@ export default function InicioPage() {
     <main className="flex flex-1 flex-col gap-8 bg-gradient-to-br from-nara-lavanda/60 via-nara-crema to-nara-cielo/60 px-5 py-10 sm:px-10">
       <div className="mx-auto grid w-full max-w-5xl gap-6 md:grid-cols-2">
         <WelcomeHero>
-          <PendingAction className="rounded-full bg-nara-lavanda-fuerte px-8 py-3 text-lg font-bold text-white transition hover:opacity-90 focus:outline-none focus:ring-4 focus:ring-nara-lavanda">
-            Conversar con Nara
-          </PendingAction>
+          <NaraChat />
         </WelcomeHero>
         <PanicButton />
       </div>

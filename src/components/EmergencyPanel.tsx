@@ -1,7 +1,15 @@
 "use client";
 
-import { useEffect, useId, useRef, type KeyboardEvent, type MouseEvent } from "react";
-import { emergencyContacts } from "@/config/emergency";
+import { useEffect, useId, useRef, useState, type KeyboardEvent, type MouseEvent } from "react";
+import { careLineNumber, emergencyContacts } from "@/config/emergency";
+
+const formattedCareNumber = careLineNumber.replace(/(\d{3})(\d{3})(\d{3})/, "$1 $2 $3");
+
+// Atención médica y psicológica comparten la misma línea.
+const careOptions = [
+  { label: "Atención médica", color: "bg-red-400", icon: <MedicalIcon /> },
+  { label: "Atención psicológica", color: "bg-nara-cielo-fuerte", icon: <PsychologicalIcon /> },
+];
 
 function MedicalIcon() {
   return (
@@ -34,6 +42,17 @@ export function EmergencyPanel({ onClose }: { onClose: () => void }) {
   const titleId = useId();
   const dialogRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
+  const [showCareNumber, setShowCareNumber] = useState(false);
+
+  // En celular el enlace tel: marca directo. En computadora no marca,
+  // así que se muestra el número para llamar desde un teléfono.
+  function handleCareClick(event: MouseEvent<HTMLAnchorElement>) {
+    const isTouchDevice = window.matchMedia("(pointer: coarse)").matches;
+    if (!isTouchDevice) {
+      event.preventDefault();
+      setShowCareNumber(true);
+    }
+  }
 
   useEffect(() => {
     const previouslyFocused = document.activeElement as HTMLElement | null;
@@ -133,26 +152,31 @@ export function EmergencyPanel({ onClose }: { onClose: () => void }) {
           ))}
         </ul>
 
-        <nav aria-label="Acceso rápido" className="flex justify-center gap-8">
-          {emergencyContacts
-            .filter((contact) => contact.kind)
-            .map((contact) => (
+        <nav aria-label="Atención directa" className="flex flex-col items-center gap-3">
+          <div className="flex justify-center gap-8">
+            {careOptions.map((option) => (
               <a
-                key={contact.number}
-                href={`tel:${contact.number}`}
+                key={option.label}
+                href={`tel:${careLineNumber}`}
+                onClick={handleCareClick}
                 className="flex flex-col items-center gap-2 rounded-2xl p-2 text-center font-bold text-nara-texto transition hover:opacity-80 focus:outline-none focus:ring-4 focus:ring-nara-menta-fuerte"
               >
                 <span
                   aria-hidden="true"
-                  className={`flex h-16 w-16 items-center justify-center rounded-full text-white shadow-md ${
-                    contact.kind === "medical" ? "bg-red-400" : "bg-nara-cielo-fuerte"
-                  }`}
+                  className={`flex h-16 w-16 items-center justify-center rounded-full text-white shadow-md ${option.color}`}
                 >
-                  {contact.kind === "medical" ? <MedicalIcon /> : <PsychologicalIcon />}
+                  {option.icon}
                 </span>
-                {contact.kind === "medical" ? "Atención médica" : "Atención psicológica"}
+                {option.label}
               </a>
             ))}
+          </div>
+
+          {showCareNumber && (
+            <p role="status" className="text-center text-sm text-nara-texto">
+              Para llamar, marca {formattedCareNumber} desde tu teléfono.
+            </p>
+          )}
         </nav>
 
         <p className="text-center text-xs text-nara-texto/70">
