@@ -9,20 +9,19 @@ const LOGIN_MESSAGES = {
   credenciales: "Usuario o contraseña incorrectos.",
   "no-registrado": "Esta cuenta no está registrada en Nara. Pide al administrador que te dé acceso.",
   servicio: "No pudimos completar el ingreso. Intenta de nuevo en un momento.",
-  campos: "Escribe tu usuario y tu contraseña.",
+  campos: "Escribe tu contraseña.",
 } as const;
 
 export type LoginState = { error: string | null };
 
 export async function loginAction(_previous: LoginState, formData: FormData): Promise<LoginState> {
-  const email = String(formData.get("email") ?? "").trim();
   const password = String(formData.get("password") ?? "");
 
-  if (!email || !password) {
+  if (!password) {
     return { error: LOGIN_MESSAGES.campos };
   }
 
-  const result = await signIn(email, password);
+  const result = await signIn("", password);
   if (!result.ok) {
     return { error: LOGIN_MESSAGES[result.reason] };
   }

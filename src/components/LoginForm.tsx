@@ -16,19 +16,8 @@ export function LoginForm() {
       className="flex w-full max-w-md flex-col gap-5 rounded-[2rem] bg-white/80 p-6 shadow-sm ring-1 ring-nara-cielo sm:p-10"
     >
       <p className="rounded-2xl bg-nara-cielo/60 px-4 py-3 text-sm text-nara-texto">
-        Ingresa con el usuario y la contraseña que te dio Nara.
+        Ingresa con la contraseña que te dio Nara.
       </p>
-
-      <label className="flex flex-col gap-2 text-sm font-semibold text-nara-texto">
-        Usuario
-        <input
-          type="text"
-          name="email"
-          autoComplete="username"
-          required
-          className="rounded-2xl border border-nara-lavanda bg-white px-4 py-3 text-base font-normal outline-none transition focus:border-nara-lavanda-fuerte focus:ring-2 focus:ring-nara-lavanda"
-        />
-      </label>
 
       <label className="flex flex-col gap-2 text-sm font-semibold text-nara-texto">
         Contraseña
