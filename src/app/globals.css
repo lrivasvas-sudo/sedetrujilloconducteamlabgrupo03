@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+/* Paleta pastel de Nara. Cambiar los colores aquí los cambia en toda la app. */
+@theme {
+  --color-nara-lavanda: #e6def7;
+  --color-nara-lavanda-fuerte: #8f7cc3;
+  --color-nara-menta: #d4f2e6;
+  --color-nara-menta-fuerte: #5fb596;
+  --color-nara-cielo: #d9eefa;
+  --color-nara-cielo-fuerte: #6aa9d6;
+  --color-nara-crema: #fdf8f0;
+  --color-nara-texto: #3e3a52;
+
+  --font-sans: var(--font-nunito);
+}
+
+body {
+  background: var(--color-nara-crema);
+  color: var(--color-nara-texto);
+}
