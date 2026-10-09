@@ -14,6 +14,8 @@ Solo se marca como implementado lo que existe y se puede comprobar en el código
 | R-05 | Logotipo de texto «Nara» con tipografía redondeada (Nunito). | `src/components/Logo.tsx` |
 | R-06 | Comandos de desarrollo, comprobación y producción. | `package.json` |
 | R-08 | Pantalla de inicio tras el acceso: tarjeta grande de Nara con la frase, botón de pánico (solo muestra un aviso; **no está conectado** a ningún servicio) y escala «¿Cómo te sientes hoy?» con 8 emociones (la elección se muestra, **no se guarda**). | `src/app/inicio/page.tsx`, `src/components/PanicButton.tsx`, `src/components/MoodPicker.tsx`, `src/config/moods.ts` |
+| R-10 | Botón «Conversar con Nara» en la tarjeta de inicio. **Solo muestra un aviso**; el asistente con IA todavía no existe. | `src/app/inicio/page.tsx`, `src/components/WelcomeHero.tsx` |
+| R-09 | Recuadros «Atención psicológica» (enlace «AQUÍ» para solicitar cita) y «Mi bienestar emocional» (botón «Ver mi progreso»). **Ambos solo muestran un aviso**; no abren citas ni progreso todavía. | `src/app/inicio/page.tsx`, `src/components/PendingAction.tsx` |
 | R-07 | Formulario de acceso **en modo de prueba**: pide solo la contraseña, y cualquier valor permite entrar. No verifica, no guarda y no envía datos. Lleva a una página provisional `/inicio`. **No es autenticación real.** | `src/components/LoginForm.tsx`, `src/app/inicio/page.tsx` |
 
 ## Pendientes

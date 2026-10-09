@@ -13,12 +13,12 @@ export function PanicButton() {
         type="button"
         onClick={() => setShowNotice(true)}
         aria-describedby={showNotice ? "aviso-panico" : undefined}
-        className="flex h-full min-h-40 w-full flex-col items-center justify-center gap-3 rounded-[2rem] bg-white/70 px-8 py-6 text-lg font-bold text-nara-texto shadow-sm ring-1 ring-red-200 transition hover:bg-red-50 focus:outline-none focus:ring-4 focus:ring-red-300 md:w-56"
+        className="flex h-full min-h-32 w-full flex-col items-center justify-center gap-2 rounded-[2rem] bg-white/70 px-5 py-4 text-base font-bold text-nara-texto shadow-sm ring-1 ring-red-200 transition hover:bg-red-50 focus:outline-none focus:ring-4 focus:ring-red-300 md:w-40"
       >
         Botón de pánico
         <span
           aria-hidden="true"
-          className="flex h-16 w-16 items-center justify-center rounded-full bg-red-500 text-3xl font-black text-white shadow-md"
+          className="flex h-12 w-12 items-center justify-center rounded-full bg-red-500 text-2xl font-black text-white shadow-md"
         >
           !
         </span>
