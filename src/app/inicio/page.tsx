@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { logoutAction } from "@/app/actions";
 import { MoodPicker } from "@/components/MoodPicker";
 import { NaraChat } from "@/components/NaraChat";
 import { PanicButton } from "@/components/PanicButton";
@@ -59,14 +58,9 @@ export default function InicioPage() {
       </div>
 
       <div className="mx-auto">
-        <form action={logoutAction}>
-          <button
-            type="submit"
-            className="text-sm font-semibold text-nara-texto/70 underline-offset-4 hover:underline"
-          >
-            Cerrar sesión
-          </button>
-        </form>
+        <Link href="/" className="text-sm font-semibold text-nara-texto/70 underline-offset-4 hover:underline">
+          Salir del modo de prueba
+        </Link>
       </div>
     </main>
   );

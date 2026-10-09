@@ -1,37 +1,20 @@
 "use client";
 
-import { useState, useTransition } from "react";
-import { saveMoodAction } from "@/app/actions";
+import { useState } from "react";
 import { moods, type Mood } from "@/config/moods";
-import { toTimeText } from "@/lib/dates";
 import { addMoodRecord } from "@/services/mood-log";
 
 // Escala de 8 caritas para elegir cómo te sientes hoy.
-// «Registrar» guarda la emoción con fecha y hora en la base de datos y muestra un mensaje motivacional.
+// «Registrar» guarda la emoción con fecha y hora y muestra un mensaje motivacional.
 export function MoodPicker() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [registered, setRegistered] = useState<{ mood: Mood; time: string } | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [isPending, startTransition] = useTransition();
   const selected = moods.find((mood) => mood.id === selectedId);
 
   function handleRegister() {
     if (!selected) return;
-    const mood = selected;
-
-    startTransition(async () => {
-      setError(null);
-      const result = await saveMoodAction(mood.id);
-
-      if (!result.ok) {
-        setError(result.error);
-        return;
-      }
-
-      // Se refleja también en el historial del panel de bienestar.
-      addMoodRecord(mood.id);
-      setRegistered({ mood, time: toTimeText(new Date(result.registradoEn)) });
-    });
+    const record = addMoodRecord(selected.id);
+    setRegistered({ mood: selected, time: record.time });
   }
 
   return (
@@ -53,13 +36,11 @@ export function MoodPicker() {
               key={mood.id}
               type="button"
               aria-pressed={isSelected}
-              disabled={isPending}
               onClick={() => {
                 setSelectedId(mood.id);
                 setRegistered(null);
-                setError(null);
               }}
-              className={`flex flex-col items-center gap-2 rounded-3xl px-3 py-5 text-base font-semibold transition focus:outline-none focus:ring-4 focus:ring-nara-lavanda disabled:opacity-60 ${
+              className={`flex flex-col items-center gap-2 rounded-3xl px-3 py-5 text-base font-semibold transition focus:outline-none focus:ring-4 focus:ring-nara-lavanda ${
                 isSelected
                   ? "bg-nara-menta ring-2 ring-nara-menta-fuerte"
                   : "bg-nara-crema hover:bg-nara-lavanda/50"
@@ -78,17 +59,11 @@ export function MoodPicker() {
         <button
           type="button"
           onClick={handleRegister}
-          disabled={!selected || isPending}
+          disabled={!selected}
           className="rounded-full bg-nara-lavanda-fuerte px-8 py-3 font-bold text-white transition hover:opacity-90 focus:outline-none focus:ring-4 focus:ring-nara-lavanda disabled:opacity-50"
         >
-          {isPending ? "Guardando..." : "Registrar"}
+          Registrar
         </button>
-
-        {error && (
-          <p role="alert" className="rounded-2xl bg-red-50 px-4 py-3 text-center text-sm font-semibold text-nara-texto ring-1 ring-red-200">
-            {error}
-          </p>
-        )}
 
         {registered && (
           <div role="status" className="flex max-w-md flex-col gap-2 rounded-2xl bg-nara-menta/60 px-5 py-4 text-center text-nara-texto">

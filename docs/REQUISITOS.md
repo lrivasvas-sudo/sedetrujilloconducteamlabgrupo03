@@ -17,7 +17,7 @@ Solo se marca como implementado lo que existe y se puede comprobar en el código
 | R-11 | Diseño de inicio: la tarjeta de Nara y el botón de pánico tienen el mismo tamaño, uno al lado del otro. «Atención psicológica» y «Mi bienestar emocional» van lado a lado, cada uno con una ilustración SVG propia. | `src/app/inicio/page.tsx`, `src/components/PanicButton.tsx`, `public/images/` |
 | R-10 | Botón «Conversar con Nara» en la tarjeta de inicio. **Solo muestra un aviso**; el asistente con IA todavía no existe. | `src/app/inicio/page.tsx`, `src/components/WelcomeHero.tsx` |
 | R-09 | Recuadros «Atención psicológica» (enlace «AQUÍ» para solicitar cita) y «Mi bienestar emocional» (botón «Ver mi progreso»). **Ambos solo muestran un aviso**; no abren citas ni progreso todavía. | `src/app/inicio/page.tsx`, `src/components/PendingAction.tsx` |
-| R-07 | Acceso con correo y contraseña (Supabase Auth). Solo entran las cuentas de la tabla `usuarios_registrados`; cada ingreso se guarda en `accesos`. `/inicio/*` se protege con `src/proxy.ts`. Requiere ejecutar `supabase/migrations/002_emociones_accesos.sql` y crear las cuentas. | `src/components/LoginForm.tsx`, `src/app/actions.ts`, `src/services/session.ts`, `src/proxy.ts`, `supabase/migrations/002_emociones_accesos.sql` |
+| R-07 | Formulario de acceso **en modo de prueba**: pide solo la contraseña, y cualquier valor permite entrar. No verifica, no guarda y no envía datos. Lleva a una página provisional `/inicio`. **No es autenticación real.** | `src/components/LoginForm.tsx`, `src/app/inicio/page.tsx` |
 
 ## Pendientes
 
